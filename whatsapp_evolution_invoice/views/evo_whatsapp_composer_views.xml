@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="evo_whatsapp_composer_view_form" model="ir.ui.view">
+        <field name="name">evo.whatsapp.composer.form</field>
+        <field name="model">evo.whatsapp.composer</field>
+        <field name="arch" type="xml">
+            <form string="Send WhatsApp">
+                <field name="res_model" invisible="1"/>
+                <field name="res_ids" invisible="1"/>
+                <div class="alert alert-info mb-2" role="status">
+                    <field name="record_count" class="fw-bold"/> record(s) selected —
+                    messages are queued and sent with a random delay to protect the number.
+                </div>
+                <group>
+                    <group>
+                        <field name="template_id" options="{'no_create': True}"/>
+                        <field name="recipient_type"/>
+                    </group>
+                    <group>
+                        <field name="user_field_id" invisible="recipient_type != 'users'"
+                               required="recipient_type == 'users'" options="{'no_create': True}"/>
+                        <field name="fixed_numbers" invisible="recipient_type != 'fixed'"
+                               required="recipient_type == 'fixed'"/>
+                        <field name="report_id" options="{'no_create': True}"/>
+                    </group>
+                </group>
+                <field name="body" placeholder="اكتب الرسالة هنا ... يمكنك استخدام {{ object.name }}"/>
+                <field name="attachment_ids" widget="many2many_binary"/>
+                <footer>
+                    <button name="action_send" type="object" string="Send All WhatsApp"
+                            class="btn-primary" icon="fa-whatsapp" data-hotkey="q"/>
+                    <button string="Cancel" special="cancel" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="evo_whatsapp_composer_action" model="ir.actions.act_window">
+        <field name="name">Send WhatsApp</field>
+        <field name="res_model">evo.whatsapp.composer</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="evo_whatsapp_composer_action_partner" model="ir.actions.act_window">
+        <field name="name">Send WhatsApp</field>
+        <field name="res_model">evo.whatsapp.composer</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="binding_view_types">list,form</field>
+    </record>
+</odoo>

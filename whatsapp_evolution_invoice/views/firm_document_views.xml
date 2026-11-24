@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- WhatsApp button next to "Action Send Activity" in the customer's Documents / Alerts tab -->
+    <record id="res_partner_form_evo_whatsapp_docs" model="ir.ui.view">
+        <field name="name">res.partner.form.evo.whatsapp.docs</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="customer_extra_fields.inherit_res_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='firm_document_ids']//button[@name='action_send_activity']" position="after">
+                <button name="action_evo_whatsapp_alert" string="WhatsApp" type="object"
+                        icon="fa-whatsapp" class="btn-success"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="firm_document_form_evo_whatsapp" model="ir.ui.view">
+        <field name="name">firm.document.form.evo.whatsapp</field>
+        <field name="model">firm.document</field>
+        <field name="inherit_id" ref="firm_customize.firm_document_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button name="action_evo_whatsapp_alert" string="Send WhatsApp Alert" type="object"
+                            icon="fa-whatsapp" class="btn-success"/>
+                </header>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="evo_whatsapp_composer_action_firm_document" model="ir.actions.act_window">
+        <field name="name">Send WhatsApp</field>
+        <field name="res_model">evo.whatsapp.composer</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="firm_customize.model_firm_document"/>
+        <field name="binding_view_types">list,form</field>
+    </record>
+</odoo>

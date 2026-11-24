@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="evo_template_crm_followup" model="evo.whatsapp.template">
+        <field name="name">CRM follow-up</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="recipient_type">record</field>
+        <field name="trigger">manual</field>
+        <field name="body">مرحباً {{ object.contact_name or object.partner_id.name or '' }}،
+شكراً لاهتمامك بخدمات {{ object.company_id.name or user.company_id.name }}.
+يسعدنا التواصل معك بخصوص: {{ object.name }}</field>
+    </record>
+</odoo>

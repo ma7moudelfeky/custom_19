@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="evo_template_doc_expiry" model="evo.whatsapp.template">
+        <field name="name">Document expiry alert</field>
+        <field name="model_id" ref="firm_customize.model_firm_document"/>
+        <field name="recipient_type">users</field>
+        <field name="user_field_id" ref="firm_customize.field_firm_document__alert_users_ids"/>
+        <field name="trigger">doc_expiry</field>
+        <field name="body">🔔 تنبيه انتهاء مستند
+العميل: {{ object.partner_id.name or '-' }}
+المستند: {{ object.document_type_id.name or '-' }}
+رقم المستند: {{ object.name }}
+تاريخ الانتهاء: {{ format_date(object.last_update_date, 'dd/MM/yyyy') }}
+برجاء البدء في إجراءات التجديد.</field>
+    </record>
+</odoo>

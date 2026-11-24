@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_evo_whatsapp_root" name="WhatsApp" sequence="60"
+              web_icon="whatsapp_evolution_invoice,static/description/icon.png"/>
+    <menuitem id="menu_evo_whatsapp_queue" name="Messages" parent="menu_evo_whatsapp_root"
+              action="evo_whatsapp_message_action" sequence="10"/>
+    <menuitem id="menu_evo_whatsapp_templates" name="Templates" parent="menu_evo_whatsapp_root"
+              action="evo_whatsapp_template_action" sequence="20" groups="base.group_system"/>
+    <menuitem id="menu_evo_whatsapp_settings" name="Settings" parent="menu_evo_whatsapp_root"
+              action="evo_whatsapp_settings_action" sequence="90" groups="base.group_system"/>
+</odoo>
