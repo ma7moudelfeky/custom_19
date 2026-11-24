@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="evo_whatsapp_template_view_form_crm" model="ir.ui.view">
+        <field name="name">evo.whatsapp.template.form.crm</field>
+        <field name="model">evo.whatsapp.template</field>
+        <field name="inherit_id" ref="whatsapp_evolution_invoice.evo_whatsapp_template_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='filter_domain']" position="after">
+                <field name="stage_ids" widget="many2many_tags"
+                       invisible="trigger != 'crm_stage'" required="trigger == 'crm_stage'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- CRM list/kanban/form: Actions > Send WhatsApp -->
+    <record id="evo_whatsapp_composer_action_crm" model="ir.actions.act_window">
+        <field name="name">Send WhatsApp</field>
+        <field name="res_model">evo.whatsapp.composer</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="crm.model_crm_lead"/>
+        <field name="binding_view_types">list,form</field>
+    </record>
+</odoo>

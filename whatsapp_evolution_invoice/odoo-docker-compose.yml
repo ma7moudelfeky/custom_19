@@ -1,0 +1,43 @@
+version: '2.1'
+
+services:
+    db:
+        image: postgres:15
+        restart: always
+        environment:
+            POSTGRES_DB: postgres
+            POSTGRES_USER: odoo
+            POSTGRES_PASSWORD: odoo
+        volumes:
+            - ./data/postgres:/var/lib/postgresql/data
+
+    odoo:
+        build: .
+        image: odoo:19.0
+        restart: always
+        volumes:
+            - odoo_data:/var/lib/odoo:rw,z
+            # for development purposes only
+            - ${ODOO_ADDONS:-./}:/mnt/extra-addons:ro,z
+            - ${ODOO_CONF:-./}:/etc/odoo:ro,z
+        ports:
+            # publish only and let Gitlab CI pick up the public port
+#            - "${ODOO_PORT:-8069}"
+            - "8019:8069"
+            - "8092:8072"
+        depends_on:
+            - db
+        # >>> ADDED: Odoo can reach Evolution API at http://evolution_api:8080
+        networks:
+            - default
+            - evolution-net
+
+volumes:
+    pgsql_data:
+    odoo_data:
+    odoo_addons:
+
+# >>> ADDED: network created by the evolution-api stack
+networks:
+    evolution-net:
+        external: true

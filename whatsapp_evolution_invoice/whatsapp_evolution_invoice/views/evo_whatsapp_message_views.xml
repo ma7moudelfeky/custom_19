@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="evo_whatsapp_message_view_list" model="ir.ui.view">
+        <field name="name">evo.whatsapp.message.list</field>
+        <field name="model">evo.whatsapp.message</field>
+        <field name="arch" type="xml">
+            <list create="false" decoration-success="state == 'sent'"
+                  decoration-danger="state == 'failed'" decoration-muted="state == 'cancel'">
+                <field name="create_date" string="Queued"/>
+                <field name="record_name"/>
+                <field name="res_model" optional="hide"/>
+                <field name="template_id" optional="show"/>
+                <field name="recipient_name"/>
+                <field name="phone"/>
+                <field name="raw_phone" optional="hide"/>
+                <field name="attempts" optional="hide"/>
+                <field name="sent_date"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'sent'" decoration-danger="state == 'failed'"
+                       decoration-info="state == 'pending'"/>
+                <field name="error" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="evo_whatsapp_message_view_form" model="ir.ui.view">
+        <field name="name">evo.whatsapp.message.form</field>
+        <field name="model">evo.whatsapp.message</field>
+        <field name="arch" type="xml">
+            <form create="false">
+                <header>
+                    <button name="action_send_now" type="object" string="Send Now"
+                            class="btn-primary" invisible="state != 'pending'"/>
+                    <button name="action_retry" type="object" string="Retry"
+                            invisible="state not in ('failed', 'cancel')"/>
+                    <button name="action_cancel" type="object" string="Cancel"
+                            invisible="state != 'pending'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="pending,sent"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_record" type="object" class="oe_stat_button"
+                                icon="fa-external-link" string="Open Record"/>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="record_name" readonly="1"/>
+                            <field name="template_id" readonly="1"/>
+                            <field name="recipient_name" readonly="1"/>
+                            <field name="raw_phone" readonly="1"/>
+                            <field name="phone" readonly="state == 'sent'"/>
+                        </group>
+                        <group>
+                            <field name="attempts" readonly="1"/>
+                            <field name="sent_date" readonly="1"/>
+                            <field name="wa_message_id" readonly="1"/>
+                            <field name="report_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <field name="body" readonly="state == 'sent'"/>
+                    <field name="attachment_ids" widget="many2many_binary" readonly="1"/>
+                    <field name="error" readonly="1" invisible="not error"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="evo_whatsapp_message_view_search" model="ir.ui.view">
+        <field name="name">evo.whatsapp.message.search</field>
+        <field name="model">evo.whatsapp.message</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="record_name"/>
+                <field name="recipient_name"/>
+                <field name="phone"/>
+                <field name="template_id"/>
+                <filter name="pending" string="Pending" domain="[('state', '=', 'pending')]"/>
+                <filter name="failed" string="Failed" domain="[('state', '=', 'failed')]"/>
+                <filter name="sent" string="Sent" domain="[('state', '=', 'sent')]"/>
+                <group>
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_template" string="Template" context="{'group_by': 'template_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="evo_whatsapp_message_action" model="ir.actions.act_window">
+        <field name="name">WhatsApp Queue</field>
+        <field name="res_model">evo.whatsapp.message</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="evo_whatsapp_message_action_retry" model="ir.actions.server">
+        <field name="name">Retry WhatsApp</field>
+        <field name="model_id" ref="model_evo_whatsapp_message"/>
+        <field name="binding_model_id" ref="model_evo_whatsapp_message"/>
+        <field name="state">code</field>
+        <field name="code">records.action_retry()</field>
+    </record>
+</odoo>

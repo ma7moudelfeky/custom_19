@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_move_form_evo_whatsapp" model="ir.ui.view">
+        <field name="name">account.move.form.evo.whatsapp</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_evo_send_whatsapp" type="object" string="Send by WhatsApp"
+                        icon="fa-whatsapp"
+                        invisible="state != 'posted' or move_type not in ('out_invoice', 'out_refund')"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="evo_whatsapp_composer_action_move" model="ir.actions.act_window">
+        <field name="name">Send WhatsApp</field>
+        <field name="res_model">evo.whatsapp.composer</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_view_types">list</field>
+    </record>
+</odoo>

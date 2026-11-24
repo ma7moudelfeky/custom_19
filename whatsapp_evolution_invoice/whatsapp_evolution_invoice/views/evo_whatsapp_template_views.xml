@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="evo_whatsapp_template_view_list" model="ir.ui.view">
+        <field name="name">evo.whatsapp.template.list</field>
+        <field name="model">evo.whatsapp.template</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="model_id"/>
+                <field name="recipient_type"/>
+                <field name="trigger"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="evo_whatsapp_template_view_form" model="ir.ui.view">
+        <field name="name">evo.whatsapp.template.form</field>
+        <field name="model">evo.whatsapp.template</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_messages" type="object" class="oe_stat_button" icon="fa-whatsapp">
+                            <field name="message_count" widget="statinfo" string="Messages"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. Document expiry alert"/></h1>
+                    </div>
+                    <group>
+                        <group string="Target">
+                            <field name="model_id" options="{'no_create': True}"/>
+                            <field name="model" invisible="1"/>
+                            <field name="recipient_type"/>
+                            <field name="user_field_id" invisible="recipient_type != 'users'"
+                                   required="recipient_type == 'users'" options="{'no_create': True}"/>
+                            <field name="fixed_numbers" invisible="recipient_type != 'fixed'"
+                                   required="recipient_type == 'fixed'"/>
+                        </group>
+                        <group string="When">
+                            <field name="trigger"/>
+                            <field name="filter_domain" widget="domain" options="{'model': 'model'}"
+                                   invisible="trigger != 'scheduled'"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Message" name="message">
+                            <field name="body" placeholder="مرحباً {{ object.partner_id.name }} ..."/>
+                            <div class="text-muted small mt-2">
+                                Placeholders: <code>{{ object.name }}</code>, <code>{{ object.partner_id.name }}</code>,
+                                <code>{{ format_date(object.date_field) }}</code>
+                            </div>
+                        </page>
+                        <page string="Attachments" name="attachments">
+                            <group>
+                                <field name="report_id" options="{'no_create': True}"/>
+                                <field name="attachment_ids" widget="many2many_binary"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="evo_whatsapp_template_action" model="ir.actions.act_window">
+        <field name="name">WhatsApp Templates</field>
+        <field name="res_model">evo.whatsapp.template</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'active_test': False}</field>
+    </record>
+</odoo>

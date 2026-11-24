@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_evo_whatsapp_template_user,evo.whatsapp.template user,model_evo_whatsapp_template,base.group_user,1,0,0,0
+access_evo_whatsapp_template_admin,evo.whatsapp.template admin,model_evo_whatsapp_template,base.group_system,1,1,1,1
+access_evo_whatsapp_message_user,evo.whatsapp.message user,model_evo_whatsapp_message,base.group_user,1,1,0,0
+access_evo_whatsapp_message_admin,evo.whatsapp.message admin,model_evo_whatsapp_message,base.group_system,1,1,1,1
+access_evo_whatsapp_composer_user,evo.whatsapp.composer user,model_evo_whatsapp_composer,base.group_user,1,1,1,1
