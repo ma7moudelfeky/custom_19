@@ -1,6 +1,6 @@
 {
     "name": "WhatsApp Evolution (Invoices, CRM, Documents)",
-    "version": "19.0.1.0.0",
+    "version": "19.0.2.0.0",
     "category": "Productivity/Discuss",
     "summary": "Free self-hosted WhatsApp via Evolution API: invoice PDFs, document-expiry "
                "alerts, CRM bulk & automatic messages, templates and a protected sending queue",
