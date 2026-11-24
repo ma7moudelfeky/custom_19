@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_whatsapp_evolution" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.whatsapp.evolution</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='account']" position="inside">
+                <block title="WhatsApp (Evolution API)" name="whatsapp_evolution_block">
+                    <setting string="Connection" help="Self-hosted Evolution API gateway">
+                        <div class="content-group">
+                            <div class="row mt8">
+                                <label for="evo_api_url" class="col-lg-4 o_light_label"/>
+                                <field name="evo_api_url"/>
+                            </div>
+                            <div class="row">
+                                <label for="evo_api_key" class="col-lg-4 o_light_label"/>
+                                <field name="evo_api_key" password="True"/>
+                            </div>
+                            <div class="row">
+                                <label for="evo_instance" class="col-lg-4 o_light_label"/>
+                                <field name="evo_instance"/>
+                            </div>
+                        </div>
+                    </setting>
+                    <setting help="Queue the invoice PDF for WhatsApp when a customer invoice is confirmed">
+                        <field name="evo_auto_send"/>
+                        <div class="content-group">
+                            <div class="row mt8">
+                                <label for="evo_delay_min" class="col-lg-4 o_light_label"/>
+                                <field name="evo_delay_min"/>
+                            </div>
+                            <div class="row">
+                                <label for="evo_delay_max" class="col-lg-4 o_light_label"/>
+                                <field name="evo_delay_max"/>
+                            </div>
+                            <div class="row">
+                                <label for="evo_batch_size" class="col-lg-4 o_light_label"/>
+                                <field name="evo_batch_size"/>
+                            </div>
+                        </div>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

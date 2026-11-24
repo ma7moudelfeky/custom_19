@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_move_form_whatsapp_evolution" model="ir.ui.view">
+        <field name="name">account.move.form.whatsapp.evolution</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_wa_send" type="object" string="Send WhatsApp"
+                        invisible="state != 'posted' or move_type not in ('out_invoice', 'out_refund')"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="wa_state" invisible="not wa_state"/>
+                <field name="wa_sent_date" invisible="not wa_sent_date"/>
+                <field name="wa_sent_to" invisible="not wa_sent_to"/>
+                <field name="wa_error" invisible="wa_state != 'failed'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_invoice_tree_whatsapp_evolution" model="ir.ui.view">
+        <field name="name">account.invoice.list.whatsapp.evolution</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree"/>
+        <field name="arch" type="xml">
+            <field name="status_in_payment" position="after">
+                <field name="wa_state" string="WhatsApp" widget="badge" optional="show"
+                       decoration-success="wa_state == 'sent'"
+                       decoration-warning="wa_state == 'pending'"
+                       decoration-danger="wa_state == 'failed'"
+                       column_invisible="context.get('default_move_type') not in ('out_invoice', 'out_refund')"/>
+                <field name="wa_sent_date" optional="show"
+                       column_invisible="context.get('default_move_type') not in ('out_invoice', 'out_refund')"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_account_invoice_filter_whatsapp_evolution" model="ir.ui.view">
+        <field name="name">account.invoice.select.whatsapp.evolution</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <filter name="cancel" position="after">
+                <separator/>
+                <filter name="wa_sent" string="WhatsApp Sent" domain="[('wa_state', '=', 'sent')]"/>
+                <filter name="wa_pending" string="WhatsApp Pending" domain="[('wa_state', '=', 'pending')]"/>
+                <filter name="wa_failed" string="WhatsApp Failed" domain="[('wa_state', '=', 'failed')]"/>
+                <filter name="wa_not_sent" string="WhatsApp Not Sent" domain="[('wa_state', '=', False), ('state', '=', 'posted')]"/>
+            </filter>
+        </field>
+    </record>
+</odoo>
